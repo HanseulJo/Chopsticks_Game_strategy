@@ -165,6 +165,18 @@ def main(display=True):
     return board_of_states
 
 
+def do_action(attack, defend, action):
+    action_type = action[0]
+    hand1, hand2 = list(map(int, action[2:-1].split(',')))
+    if action_type == 'H':  # Hit
+        for i, j in [(1,1), (1,0), (0,1), (0,0)]:
+            if attack[i] == hand1 and  defend[j] == hand2:
+                new_defend = list(defend)
+                new_defend[j] = hit(hand1, hand2)
+                return attack, tuple(new_defend)
+    elif action[0] == 'S':
+        return (hand1, hand2), defend
+
 def play_chopsticks(board_strategy):
     hands = all_hands()
     board_of_states = {attack: {defend: State(attack, defend) for defend in hands} for attack in hands}
@@ -178,9 +190,9 @@ def play_chopsticks(board_strategy):
 
     while True:
         print("\nWelcome to Chopsticks Game: you CANNOT beat this.\n")
-        print("*** Notation Alert! ***")
-        print("  H[x,y]  : attacker hits defender's y-hand with its x-hand")
-        print("  S[x1,x2]: attacker splits its hand into (x1,x2)")
+        print("*** Notation Alert! (about actions) ***")
+        print("  H[x,y]  : attacker HITS defender's y-hand with one's x-hand")
+        print("  S[x1,x2]: attacker SPLITS one's hands into x1 & x2")
         print()
 
         round = 1
@@ -194,7 +206,7 @@ def play_chopsticks(board_strategy):
             print("You     :", Player)
             print()
             if Turn == 'YOUR':
-                state = board_of_states[Player][Computer]
+                state = board_of_states[swap(*Player)][swap(*Computer)]
                 actions = [action for _, _, action in state.next_states]
                 print(Turn, "Available Actions:")
                 for i, act in enumerate(actions):
@@ -203,13 +215,14 @@ def play_chopsticks(board_strategy):
                 while (not act_num.isdigit()) or int(act_num) not in range(1, len(actions)+1):
                     print("::Wrong Input::")
                     act_num = input("Which action do you want to do? (Enter a number) : ")
-                Computer, Player, action = state.next_states[int(act_num)-1]
+                action = actions[int(act_num)-1]
                 print(Turn, "Action is", action)
+                Player, Computer = do_action(Player, Computer, action)
                 Turn = "Computer's"
                 sleep(2)
             else:  # Turn == "Computer's"
-                state = board_of_states[Computer][Player]
-                strategy_info = board_strategy[Computer][Player].strategy
+                state = board_of_states[swap(*Computer)][swap(*Player)]
+                strategy_info = board_strategy[swap(*Computer)][swap(*Player)].strategy
                 if len(strategy_info) == 0:  # Computer is losing
                     strategy_info = [action for _, _, action in state.next_states]
                 action = choice(strategy_info)
@@ -217,7 +230,7 @@ def play_chopsticks(board_strategy):
                     action = action[:-1]
                 for next_attack, next_defend, act in state.next_states:
                     if act == action:
-                        Player, Computer = next_attack, next_defend
+                        Computer, Player = do_action(Computer, Player, action)
                 print(Turn, "Action is", action)
                 Turn = "YOUR"
                 sleep(5)
@@ -229,10 +242,10 @@ def play_chopsticks(board_strategy):
         print("You     :", Player)
         print()
         if Player == (0,0):
-            print("You Lose. \n\n")
+            print("You LOST. \n\n")
             sleep(3)
         elif Computer == (0,0):
-            print("You Win. How dare you?! \n\n")
+            print("You WON. How dare you?! \n\n")
             sleep(3)
         if not ask_yesno("Would you play another game? (y/n): "):
             break
