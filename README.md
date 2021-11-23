@@ -38,3 +38,11 @@ python chopsticks.py --n 4 --game
 ```
 python chopsticks.py --n 6 --game
 ```
+
+## Observation (not rigorously proved)
+
+If the chopsticks game starts with (1,1), (1,1), then the starting player (i.e. attacker at 1st round)...
+
+1. ... can WIN (or, has a winning strategy), IF both players has 2 or 4 `FINGER`s.
+2. ... must LOSE, IF its opponent is smart enough and both players have 5 `FINGERS`s (as usual).
+3. ... and its opponent cannot defeat each other (or, always TIE), IF both players are smart enough and have 3, or 6 OR MORE `FINGERS`s.
