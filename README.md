@@ -8,7 +8,7 @@ python chopsticks.py [--n FINGER] [--game] [--txt]
 
 ## Options
 
-* `--n FINGER` : '`FINGER`' is the number(so, should be an integer) of 'fingers' in a hand. Default value is 5. In chopsticks game, if a hand should spread all the fingers (it has) or more, the hand become 'dead'. 
+* `--n FINGER` : '`FINGER`' is the number(so, should be an integer) of 'fingers' in a hand(Default: **5**). In chopsticks game, if a hand should spread all the fingers (it has) or more, the hand become 'dead'. 
 * `--game` : If you want to play a game, use this option. If you do not use this option, then you can get a printed version of strategy table.
 * `--txt` : If you want to print the strategy table into a text file, use this option. This option only works when you do not use `--game` option.
 
