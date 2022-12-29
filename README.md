@@ -1,7 +1,7 @@
 # Chopsticks_Game_strategy
 Python code which can print a strategy table of generalized (in terms of #. of fingers) chopsticks game.
 
-Paper: http://www.rne.or.kr/teen_search_view.php?wr_id=77&page=8
+Paper (Korean, but with an abstract in English): http://www.rne.or.kr/gnuboard5/teen_search/77?page=10 
 
 
 ```
